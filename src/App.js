@@ -7,7 +7,7 @@ export default function App() {
     <div className="App">
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
-        <p>Iniciando o projeto</p>
+        <p>Iniciando o projeto grupo 6</p>
       </header>
     </div>
   );
