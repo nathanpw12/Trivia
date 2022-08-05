@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class Login extends Component {
@@ -29,6 +30,14 @@ class Login extends Component {
     });
   };
 
+  fetchToken = async () => {
+    const { history } = this.props;
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
+    history.push('/game');
+  }
+
   render() {
     const { user, email, button } = this.state;
     return (
@@ -57,12 +66,23 @@ class Login extends Component {
           />
         </label>
 
-        <button disabled={ button } type="button" data-testid="btn-play">
+        <button
+          onClick={ this.fetchToken }
+          disabled={ button }
+          type="button"
+          data-testid="btn-play"
+        >
           Play
         </button>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Login;
