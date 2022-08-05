@@ -1,3 +1,5 @@
+import { LOGIN_REQUEST } from '../actions';
+
 const INITIAL_STATE = {
   name: '',
   assertions: 0,
@@ -7,11 +9,12 @@ const INITIAL_STATE = {
 
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  // case first:
-  //   return {
-  //     ...state,
-  //     ...payload,
-  //   };
+  case LOGIN_REQUEST:
+    return {
+      ...state,
+      name: action.name,
+      gravatarEmail: action.email,
+    };
   default:
     return state;
   }
