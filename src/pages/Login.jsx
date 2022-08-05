@@ -23,20 +23,30 @@ class Login extends Component {
   };
 
   inputHandle = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    }, () => {
-      this.verifyButton();
-    });
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        this.verifyButton();
+      },
+    );
   };
 
   fetchToken = async () => {
     const { history } = this.props;
-    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const response = await fetch(
+      'https://opentdb.com/api_token.php?command=request',
+    );
     const data = await response.json();
     localStorage.setItem('token', data.token);
     history.push('/game');
-  }
+  };
+
+  settingsButtons = () => {
+    const { history } = this.props;
+    history.push('/config');
+  };
 
   render() {
     const { user, email, button } = this.state;
@@ -73,6 +83,10 @@ class Login extends Component {
           data-testid="btn-play"
         >
           Play
+        </button>
+
+        <button type="button" data-testid="btn-settings" onClick={ this.settingsButtons }>
+          Configurações
         </button>
       </div>
     );
