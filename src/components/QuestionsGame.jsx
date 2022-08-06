@@ -19,10 +19,11 @@ class QuestionsGame extends Component {
   }
 
   componentDidMount() {
-    const { timer } = this.state;
-    if (timer > 0) {
-      this.decreaseTimer();
-    }
+    this.timerID = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    }, this.second);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -35,17 +36,6 @@ class QuestionsGame extends Component {
 
   componentWillUnmount() {
     clearInterval(this.timerID);
-  }
-
-  decreaseTimer = () => {
-    const { timer } = this.state;
-    if (timer > 0) {
-      this.timerID = setInterval(() => {
-        this.setState((prevState) => ({
-          timer: prevState.timer - 1,
-        }));
-      }, this.second);
-    }
   }
 
 shuffle = (array) => {
