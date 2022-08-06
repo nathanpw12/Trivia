@@ -6,13 +6,45 @@ import '../App.css';
 class QuestionsGame extends Component {
   constructor() {
     super();
-
+    this.second = 1000;
     this.state = {
       index: 0,
       answered: false,
       shuffledQuestions: [],
       shuffled: false,
+      timer: 30,
+      timerOver: false,
     };
+  }
+
+  componentDidMount() {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.decreaseTimer();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.timer === 0) {
+      this.setState({
+        timerOver: true,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  decreaseTimer = () => {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.timerID = setInterval(() => {
+        this.setState((prevState) => ({
+          timer: prevState.timer - 1,
+        }));
+      }, this.second);
+    }
   }
 
 shuffle = (array) => {
@@ -52,7 +84,7 @@ shuffle = (array) => {
   }
 
   render() {
-    const { index, answered, shuffledQuestions } = this.state;
+    const { index, answered, shuffledQuestions, timer, timerOver } = this.state;
     const { questions } = this.props;
     const actualQuestion = questions[index];
     const correctAnswer = actualQuestion.correct_answer;
@@ -61,11 +93,13 @@ shuffle = (array) => {
       <div>
         <h2 data-testid="question-category">{ actualQuestion.category }</h2>
         <h3 data-testid="question-text">{ actualQuestion.question }</h3>
+        <h4>{ timerOver ? '0' : timer }</h4>
         <div data-testid="answer-options">
           {shuffledQuestions.map((element) => {
             if (element === correctAnswer) {
               return (
                 <button
+                  disabled={ timerOver }
                   onClick={ this.colorChangeOnClick }
                   key={ element }
                   type="button"
@@ -79,6 +113,7 @@ shuffle = (array) => {
             }
             return (
               <button
+                disabled={ timerOver }
                 onClick={ this.colorChangeOnClick }
                 key={ element }
                 type="button"
