@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
+import { scoreAction } from '../redux/actions';
 
 class QuestionsGame extends Component {
   constructor() {
@@ -83,11 +84,37 @@ shuffle = (array) => {
     });
   }
 
+  submitCorrectQuestion = () => {
+    const { timer, index } = this.state;
+    const { questions, submitQuestion } = this.props;
+    const hard = 3;
+    const magicNumber = 10;
+    let difficulty = 0;
+    const actualQuestionDifficulty = questions[index].difficulty;
+    switch (actualQuestionDifficulty) {
+    case 'easy':
+      difficulty = 1;
+      break;
+    case 'medium':
+      difficulty = 2;
+      break;
+    case 'hard':
+      difficulty = hard;
+      break;
+    default:
+      return '';
+    }
+    const score = magicNumber + (timer * difficulty);
+    submitQuestion(score);
+    this.colorChangeOnClick();
+  }
+
   render() {
     const { index, answered, shuffledQuestions, timer, timerOver } = this.state;
     const { questions } = this.props;
     const actualQuestion = questions[index];
     const correctAnswer = actualQuestion.correct_answer;
+    console.log(actualQuestion);
     this.getShuffledQuestions();
     return (
       <div>
@@ -100,7 +127,7 @@ shuffle = (array) => {
               return (
                 <button
                   disabled={ timerOver }
-                  onClick={ this.colorChangeOnClick }
+                  onClick={ this.submitCorrectQuestion }
                   key={ element }
                   type="button"
                   data-testid="correct-answer"
@@ -135,8 +162,13 @@ const mapStateToProps = (store) => ({
   questions: store.questions.results,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  submitQuestion: (score) => dispatch(scoreAction(score)),
+});
+
 QuestionsGame.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  submitQuestion: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(QuestionsGame);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsGame);
