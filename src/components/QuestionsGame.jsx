@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../App.css';
 
 class QuestionsGame extends Component {
   constructor() {
@@ -8,6 +9,9 @@ class QuestionsGame extends Component {
 
     this.state = {
       index: 0,
+      answered: false,
+      shuffledQuestions: [],
+      shuffled: false,
     };
   }
 
@@ -29,19 +33,30 @@ shuffle = (array) => {
 }
 
   getShuffledQuestions = () => {
-    const { index } = this.state;
+    const { index, shuffled } = this.state;
     const { questions } = this.props;
     const actualQuestion = questions[index];
     const question = [actualQuestion.correct_answer, ...actualQuestion.incorrect_answers];
-    return this.shuffle(question);
+    if (!shuffled) {
+      this.setState({
+        shuffledQuestions: this.shuffle(question),
+        shuffled: true,
+      });
+    }
+  }
+
+  colorChangeOnClick = () => {
+    this.setState({
+      answered: true,
+    });
   }
 
   render() {
-    const { index } = this.state;
+    const { index, answered, shuffledQuestions } = this.state;
     const { questions } = this.props;
     const actualQuestion = questions[index];
     const correctAnswer = actualQuestion.correct_answer;
-    const shuffledQuestions = this.getShuffledQuestions();
+    this.getShuffledQuestions();
     return (
       <div>
         <h2 data-testid="question-category">{ actualQuestion.category }</h2>
@@ -51,9 +66,11 @@ shuffle = (array) => {
             if (element === correctAnswer) {
               return (
                 <button
+                  onClick={ this.colorChangeOnClick }
                   key={ element }
                   type="button"
                   data-testid="correct-answer"
+                  className={ answered ? 'correct-answer' : '' }
                 >
                   { element }
 
@@ -62,9 +79,11 @@ shuffle = (array) => {
             }
             return (
               <button
+                onClick={ this.colorChangeOnClick }
                 key={ element }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
+                className={ answered ? 'wrong-answer' : '' }
               >
                 { element }
 
