@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import QuestionsGame from '../components/QuestionsGame';
 import { questionsActions } from '../redux/actions';
 
 class Game extends Component {
@@ -28,11 +29,12 @@ class Game extends Component {
   }
 
   render() {
+    const { questions } = this.props;
     return (
-      <>
+      <div>
         <Header />
-        <div />
-      </>
+        {questions.length > 0 ? <QuestionsGame /> : <p>Carregando Pergunta</p> }
+      </div>
     );
   }
 }
@@ -42,10 +44,15 @@ Game.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   questionsDispatch: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
+
+const mapStateToProps = (store) => ({
+  questions: store.questions.results,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   questionsDispatch: (response) => dispatch(questionsActions(response)),
 });
 
-export default connect(null, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
