@@ -14,26 +14,32 @@ class Game extends Component {
     const { history } = this.props;
     localStorage.removeItem('token');
     history.push('/');
-  }
+  };
 
   fetchQuestions = async () => {
     const { questionsDispatch } = this.props;
     const token = localStorage.getItem('token');
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const response = await fetch(
+      `https://opentdb.com/api.php?amount=5&token=${token}`,
+    );
     const data = await response.json();
     if (data.response_code === 0) {
       questionsDispatch(data.results);
     } else {
       this.errorRequest();
     }
-  }
+  };
 
   render() {
-    const { questions } = this.props;
+    const { questions, history } = this.props;
     return (
       <div>
         <Header />
-        {questions.length > 0 ? <QuestionsGame /> : <p>Carregando Pergunta</p> }
+        {questions.length > 0 ? (
+          <QuestionsGame history={ history } />
+        ) : (
+          <p>Carregando Pergunta</p>
+        )}
       </div>
     );
   }

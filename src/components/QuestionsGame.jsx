@@ -38,41 +38,46 @@ class QuestionsGame extends Component {
     clearInterval(this.timerID);
   }
 
-shuffle = (array) => {
-  let currentIndex = array.length;
-  let randomIndex;
-  // While there remain elements to shuffle.
-  while (currentIndex !== 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+  shuffle = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+    // While there remain elements to shuffle.
+    while (currentIndex !== 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
 
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
 
-  return array;
-}
+    return array;
+  };
 
   getShuffledQuestions = () => {
     const { index, shuffled } = this.state;
     const { questions } = this.props;
     const actualQuestion = questions[index];
-    const question = [actualQuestion.correct_answer, ...actualQuestion.incorrect_answers];
+    const question = [
+      actualQuestion.correct_answer,
+      ...actualQuestion.incorrect_answers,
+    ];
     if (!shuffled) {
       this.setState({
         shuffledQuestions: this.shuffle(question),
         shuffled: true,
       });
     }
-  }
+  };
 
   colorChangeOnClick = () => {
     this.setState({
       answered: true,
     });
-  }
+  };
 
   submitCorrectQuestion = () => {
     const { timer, index } = this.state;
@@ -94,9 +99,26 @@ shuffle = (array) => {
     default:
       return '';
     }
-    const score = magicNumber + (timer * difficulty);
+    const score = magicNumber + timer * difficulty;
     submitQuestion(score);
     this.colorChangeOnClick();
+  };
+
+  handleNextButtun = () => {
+    const { index } = this.state;
+    const { history } = this.props;
+    const lastQuestionIndex = 4;
+    if (index === lastQuestionIndex) {
+      history.push('/feedback');
+    } else {
+      this.setState((prev) => ({
+        index: prev.index + 1,
+        timerOver: false,
+        answered: false,
+        shuffled: false,
+        timer: 30,
+      }));
+    }
   }
 
   render() {
@@ -104,13 +126,12 @@ shuffle = (array) => {
     const { questions } = this.props;
     const actualQuestion = questions[index];
     const correctAnswer = actualQuestion.correct_answer;
-    console.log(actualQuestion);
     this.getShuffledQuestions();
     return (
       <div>
-        <h2 data-testid="question-category">{ actualQuestion.category }</h2>
-        <h3 data-testid="question-text">{ actualQuestion.question }</h3>
-        <h4>{ timerOver ? '0' : timer }</h4>
+        <h2 data-testid="question-category">{actualQuestion.category}</h2>
+        <h3 data-testid="question-text">{actualQuestion.question}</h3>
+        <h4>{timerOver ? '0' : timer}</h4>
         <div data-testid="answer-options">
           {shuffledQuestions.map((element) => {
             if (element === correctAnswer) {
@@ -123,8 +144,7 @@ shuffle = (array) => {
                   data-testid="correct-answer"
                   className={ answered ? 'correct-answer' : '' }
                 >
-                  { element }
-
+                  {element}
                 </button>
               );
             }
@@ -137,12 +157,16 @@ shuffle = (array) => {
                 data-testid={ `wrong-answer-${index}` }
                 className={ answered ? 'wrong-answer' : '' }
               >
-                { element }
-
+                {element}
               </button>
             );
           })}
         </div>
+        {timerOver || answered ? (
+          <button data-testid="btn-next" type="button" onClick={ this.handleNextButtun }>
+            Next
+          </button>
+        ) : null}
       </div>
     );
   }
@@ -157,7 +181,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 QuestionsGame.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   submitQuestion: PropTypes.func.isRequired,
 };
 
