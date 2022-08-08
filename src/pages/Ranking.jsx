@@ -11,8 +11,8 @@ class Ranking extends Component {
   }
 
   getLocalStorageRanking = () => {
-    const scores = JSON.parse(localStorage.getItem('ranking'))
-      .sort((a, b) => b.score - a.score);
+    const score = JSON.parse(localStorage.getItem('ranking'));
+    const scores = score.sort((a, b) => b.score - a.score);
     return scores;
   }
 
