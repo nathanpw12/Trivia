@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, SCORE_ACTION } from '../actions';
+import { LOGIN_REQUEST, NEW_GAME, SCORE_ACTION } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -20,6 +20,12 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       score: state.score + action.score,
       assertions: state.assertions + 1,
+    };
+  case NEW_GAME:
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
     };
   default:
     return state;
