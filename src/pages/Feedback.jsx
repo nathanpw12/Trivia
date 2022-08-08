@@ -4,10 +4,18 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  state = { }
+  historyBtnPlayAgain = () => {
+    const { history } = this.props;
+    history.push('/');
+  }
+
+  historyBtnRanking = () => {
+    const { history } = this.props;
+    history.push('/ranking');
+  }
 
   render() {
-    const { assertions, score, history } = this.props;
+    const { assertions, score } = this.props;
     const assertionsNumber = 3;
     return (
       <div>
@@ -22,7 +30,7 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ this.historyBtnPlayAgain }
         >
           Play Again
 
@@ -30,7 +38,7 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
+          onClick={ this.historyBtnRanking }
         >
           Ranking
 

@@ -1,8 +1,8 @@
-import React from "react";
 import { screen } from "@testing-library/react";
-import App from "../../App";
-import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
 import userEvent from "@testing-library/user-event";
+import React from "react";
+import App from "../App";
+import renderWithRouterAndRedux from "../tests/helpers/renderWithRouterAndRedux";
 
 beforeEach(async () => {
   window.fetch = jest.fn().mockResolvedValue({
