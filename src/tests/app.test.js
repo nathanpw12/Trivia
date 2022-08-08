@@ -3,9 +3,9 @@ import React from "react";
 import App from "../App";
 import renderWithRouterAndRedux from "../tests/helpers/renderWithRouterAndRedux";
 
-beforeEach(() => {
+// beforeEach(() => {
   
-})
+// })
 describe('', () => {
   it('', () => {
     renderWithRouterAndRedux(<App />, {}, '/ranking')
