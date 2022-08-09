@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginAction } from '../redux/actions';
+import logo from '../trivia.png';
 
 class Login extends Component {
   constructor() {
@@ -55,30 +56,34 @@ class Login extends Component {
   render() {
     const { user, email, button } = this.state;
     return (
-      <div>
-        <label htmlFor="name">
-          Nome:
-          <input
-            id="name"
-            name="user"
-            data-testid="input-player-name"
-            type="text"
-            value={ user }
-            onChange={ this.inputHandle }
-          />
-        </label>
+      <div className="login-from">
+        <img src={ logo } className="App-logo" alt="logo" />
+        <div className="inpus-login">
+          <label htmlFor="name">
+            Nome
+            <input
+              id="name"
+              name="user"
+              data-testid="input-player-name"
+              type="text"
+              value={ user }
+              onChange={ this.inputHandle }
+            />
+          </label>
 
-        <label htmlFor="email">
-          Email:
-          <input
-            id="email"
-            type="email"
-            data-testid="input-gravatar-email"
-            name="email"
-            value={ email }
-            onChange={ this.inputHandle }
-          />
-        </label>
+          <label htmlFor="email">
+            Email
+            <input
+              id="email"
+              type="email"
+              data-testid="input-gravatar-email"
+              name="email"
+              value={ email }
+              onChange={ this.inputHandle }
+            />
+          </label>
+
+        </div>
 
         <button
           onClick={ this.fetchToken }

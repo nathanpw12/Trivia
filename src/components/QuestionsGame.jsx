@@ -124,7 +124,7 @@ class QuestionsGame extends Component {
     const correctAnswer = actualQuestion.correct_answer;
     this.getShuffledQuestions();
     return (
-      <div>
+      <div className="questions">
         <h2 data-testid="question-category">{actualQuestion.category}</h2>
         <h3 data-testid="question-text">{actualQuestion.question}</h3>
         <h4 data-testid="timer">{timerOver ? '0' : timer}</h4>

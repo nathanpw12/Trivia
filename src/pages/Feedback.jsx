@@ -37,15 +37,21 @@ class Feedback extends Component {
     const { assertions, score } = this.props;
     const assertionsNumber = 3;
     return (
-      <div>
+      <>
         <Header />
         {
           assertions < assertionsNumber
             ? <p data-testid="feedback-text">Could be better...</p>
             : <p data-testid="feedback-text">Well Done!</p>
         }
-        <p data-testid="feedback-total-score">{score}</p>
-        <p data-testid="feedback-total-question">{assertions}</p>
+        <p>
+          {'Pontuação final: '}
+          <span data-testid="feedback-total-score">{score}</span>
+        </p>
+        <p>
+          {'Quantidade de acertos: '}
+          <span data-testid="feedback-total-question">{assertions}</span>
+        </p>
         <button
           type="button"
           data-testid="btn-play-again"
@@ -62,7 +68,7 @@ class Feedback extends Component {
           Ranking
 
         </button>
-      </div>
+      </>
     );
   }
 }

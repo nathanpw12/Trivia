@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ReactLoading from 'react-loading';
 import Header from '../components/Header';
 import QuestionsGame from '../components/QuestionsGame';
 import { questionsActions } from '../redux/actions';
+import logo from '../trivia.png';
 
 class Game extends Component {
   componentDidMount() {
@@ -24,7 +26,10 @@ class Game extends Component {
     );
     const data = await response.json();
     if (data.response_code === 0) {
-      questionsDispatch(data.results);
+      const seconds = 700;
+      setTimeout(() => {
+        questionsDispatch(data.results);
+      }, seconds);
     } else {
       this.errorRequest();
     }
@@ -33,14 +38,15 @@ class Game extends Component {
   render() {
     const { questions, history } = this.props;
     return (
-      <div>
+      <>
         <Header />
-        {questions.length > 0 ? (
+        <img src={ logo } className="App-logo" alt="logo" />
+        { questions.length > 0 ? (
           <QuestionsGame history={ history } />
         ) : (
-          <p>Carregando Pergunta</p>
+          <ReactLoading type="spin" width="8%" height="8%" />
         )}
-      </div>
+      </>
     );
   }
 }

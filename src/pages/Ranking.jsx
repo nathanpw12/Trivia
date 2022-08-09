@@ -19,7 +19,7 @@ class Ranking extends Component {
   render() {
     const scores = this.getLocalStorageRanking();
     return (
-      <div data-testid="ranking-title">
+      <div data-testid="ranking-title" className="ranking">
         <button
           type="button"
           data-testid="btn-go-home"
@@ -33,9 +33,14 @@ class Ranking extends Component {
           {
             scores.map((element, index) => (
               <li key={ element.name }>
+                {index + 1}
                 <img src={ element.picture } alt="img-profile" />
                 <p data-testid={ `player-name-${index}` }>{element.name}</p>
-                <p data-testid={ `player-score-${index}` }>{element.score}</p>
+                <p>
+                  {'Pontuação: '}
+                  <span data-testid={ `player-score-${index}` }>{element.score}</span>
+                </p>
+
               </li>))
           }
         </ol>
