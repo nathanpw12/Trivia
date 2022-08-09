@@ -1,4 +1,4 @@
-import { getByTestId, screen, waitFor } from "@testing-library/react";
+import { findAllByTestId, getByTestId, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import App from "../App";
 import fetchMock from 'fetch-mock-jest';
@@ -7,6 +7,7 @@ import 'jest-localstorage-mock';
 import userEvent from "@testing-library/user-event";
 import questions from "../redux/reducers/questions";
 import { initialState } from './helpers/initialState';
+
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -91,10 +92,16 @@ describe('Game page', () => {
       expect(localStorage.setItem).toHaveBeenCalled();
   })
 
+
   test('Questions Game Other BUttons', () => {
+    jest.useFakeTimers();
+    jest.spyOn(global, 'setInterval');
+    jest.spyOn(global, 'setTimeout');
     window.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue('teste'),
     });
-    renderWithRouterAndRedux(<App />, initialState ,'/game');
+    renderWithRouterAndRedux(<App />, initialState ,'/game'); 
+    jest.advanceTimersByTime(31000);
+    expect(screen.getByRole('button', {name: /next/i})).toBeInTheDocument();
   })
 })
