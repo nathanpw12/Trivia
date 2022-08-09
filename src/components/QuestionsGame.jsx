@@ -97,7 +97,6 @@ class QuestionsGame extends Component {
       difficulty = hard;
       break;
     default:
-      return '';
     }
     const score = magicNumber + timer * difficulty;
     submitQuestion(score);
@@ -131,7 +130,7 @@ class QuestionsGame extends Component {
       <div>
         <h2 data-testid="question-category">{actualQuestion.category}</h2>
         <h3 data-testid="question-text">{actualQuestion.question}</h3>
-        <h4>{timerOver ? '0' : timer}</h4>
+        <h4 data-testid="timer">{timerOver ? '0' : timer}</h4>
         <div data-testid="answer-options">
           {shuffledQuestions.map((element) => {
             if (element === correctAnswer) {
