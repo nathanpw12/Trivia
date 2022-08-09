@@ -11,6 +11,7 @@ import { initialState } from './helpers/initialState';
 
 afterEach(() => {
   jest.resetAllMocks();
+  jest.useRealTimers()
 })
 
 describe('Ranking', () => {
@@ -43,17 +44,7 @@ describe('Game page', () => {
     expect(fetch).toBeCalled();
   })
 
-  test('Game fetch', () => {
-    const tokenMock = {
-      "response_code":0,
-      "response_message":"Token Generated Successfully!",
-      "token":"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
-    }
-    window.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(tokenMock),
-    });
-    renderWithRouterAndRedux(<App />, initialState ,'/game');
-  })
+
 
   test('Questions Game Component', async () => {
     window.fetch = jest.fn().mockResolvedValue({
@@ -90,6 +81,7 @@ describe('Game page', () => {
       userEvent.click(play);
       expect(history.location.pathname).toBe('/');  
       expect(localStorage.setItem).toHaveBeenCalled();
+      console.log('Teste Feedback')
   })
 
 
@@ -103,5 +95,17 @@ describe('Game page', () => {
     renderWithRouterAndRedux(<App />, initialState ,'/game'); 
     jest.advanceTimersByTime(31000);
     expect(screen.getByRole('button', {name: /next/i})).toBeInTheDocument();
+  })
+  
+  test('Game fetch', () => {
+    const tokenMock = {
+      "response_code":0,
+      "response_message":"Token Generated Successfully!",
+      "token":"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
+    }
+    window.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue(tokenMock),
+    });
+    renderWithRouterAndRedux(<App />, initialState ,'/game');
   })
 })

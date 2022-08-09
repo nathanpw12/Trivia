@@ -86,17 +86,14 @@ class QuestionsGame extends Component {
     const magicNumber = 10;
     let difficulty = 0;
     const actualQuestionDifficulty = questions[index].difficulty;
-    switch (actualQuestionDifficulty) {
-    case 'easy':
+    if (actualQuestionDifficulty === 'easy') {
       difficulty = 1;
-      break;
-    case 'medium':
+    }
+    if (actualQuestionDifficulty === 'medium') {
       difficulty = 2;
-      break;
-    case 'hard':
+    }
+    if (actualQuestionDifficulty === 'hard') {
       difficulty = hard;
-      break;
-    default:
     }
     const score = magicNumber + timer * difficulty;
     submitQuestion(score);
