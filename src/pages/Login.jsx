@@ -60,7 +60,7 @@ class Login extends Component {
         <img src={ logo } className="App-logo" alt="logo" />
         <div className="inpus-login">
           <label htmlFor="name">
-            Nome
+            Nome retirar
             <input
               id="name"
               name="user"
