@@ -36,6 +36,29 @@ describe('Testa a página de feedback', () => {
     const btnRanking = screen.getByTestId('btn-ranking')
     userEvent.click(btnRanking) 
   });
-  
 
+  it('test second place in ranking', () => {
+    const initialState = {
+      player: {
+        name: 'Lcuas',
+        assertions: 1,
+        score: 39,
+        gravatarEmail: 'test@mail.com'
+      }
+    }
+    const mock = [{name: "sfsd", score: 100, picture: "https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e"}]
+  
+    global.localStorage.setItem('ranking', JSON.stringify(mock))
+  
+    renderWithRouterAndRedux(<App />, initialState, '/feedback')
+    const btnRanking = screen.getByTestId('btn-ranking')
+  
+    userEvent.click(btnRanking)
+  
+    const name = screen.getByTestId('player-name-1')
+    const score = screen.getByTestId('player-score-1')
+  
+    expect(name).toBeInTheDocument()
+    expect(score).toBeInTheDocument()
+  })
 });
