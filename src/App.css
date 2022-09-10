@@ -153,3 +153,9 @@ button {
   justify-content: space-evenly;
   width: 100%;
 }
+
+.user-img{
+  border-radius: 200px;
+  width: 95px;
+  height: 95px;
+}
