@@ -9,7 +9,7 @@ class Header extends Component {
     const hash = md5(email).toString();
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="user-img" />
+        <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="user-img" className="user-img" />
         <p
           data-testid="header-player-name"
         >
